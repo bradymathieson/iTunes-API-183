@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div>
+    <h2>The terms returned from the schedule API are:</h2>
+    {% for term in terms %}
+        {{ term['TermDescr'] }}<br>
+    {% endfor %}
+</div>
+
+{% endblock %}

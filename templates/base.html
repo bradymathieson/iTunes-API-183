@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <title>title for your pages</title>
+    {% endblock %}
+  </head>
+  <body>
+    <div id="header">
+      <h1> Welcome to your starter code! </h1>
+      Do some experimenting and make some changes.
+    </div>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+      {% block footer %}
+      {% endblock %}
+    </div>
+  </body>
+</html>
