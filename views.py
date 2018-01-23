@@ -22,6 +22,21 @@ def gid():
     else:
         return "bad!"
 
+@app.route('/get_preview_url', methods=["GET", "POST"])
+def gpu():
+    if not len(request.args):
+        return "bad!"
+    if request.args['title'] and request.args['artist']:
+        name = convert_string_for_req("{} {}".format(request.args['title'], request.args['artist']))
+        r = requests.get("https://itunes.apple.com/search?term={}&entity=song&limit=1".format(name))
+        try:
+            return jsonify({'artist': convert_string_from_req(request.args['artist']), 'title': convert_string_from_req(request.args['title']), 'url': r.json()['results'][0]['previewUrl']})
+        except:
+            return "no match or invalid format"
+    
+    else:
+        return "bad!"
+
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
 
