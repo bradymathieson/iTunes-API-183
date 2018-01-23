@@ -1,13 +1,27 @@
-import sys
-sys.path.append('controllers')
+from flask import Flask, request, jsonify
+from helpers import *
+import requests
+app = Flask(__name__)
 
-'''
-Add your pages down here as imported modules from the /controllers directory. Each
-page should have an import statement. This is how we are connecting our controllers 
-to our website!
+@app.route('/')
+def homepage():
+    return "nothin' here"
 
-For example, if your page is named file.py, write:
-	from file import *
-'''
+@app.route('/get_artist_id', methods=["GET", "POST"])
+def gid():
+    if not len(request.args):
+        return "bad!"
+    if request.args['name']:
+        name = convert_string_for_req(request.args['name'])
+        r = requests.get("http://itunes.apple.com/search?type=music&limit=1&term={}".format(name))
+        try:
+            return jsonify({'artist': convert_string_from_req(name), 'id': r.json()['results'][0]['artistId']})
+        except:
+            return "no match or invalid format"
+        
+    else:
+        return "bad!"
 
-from index import *
+if __name__ == '__main__':
+    app.run(debug=True, use_reloader=True)
+
